@@ -11,7 +11,7 @@ provider "aws" {
 }
 
 module "emr" {
-    source                                              = "./module"
+    source                                              = "../"
     name                                                = "TEST"
     environment                                         = "stage"
 
