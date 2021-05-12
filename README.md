@@ -23,13 +23,13 @@ provider "aws" {
 }
 
 module "vpc" {
-  source      = "../../modules/vpc"
-  name        = "endpoint"
+  source      = "git@github.com:SebastianUA/terraform.git//aws/modules/vpc?ref=master"
+  name        = "vpc"
   environment = "stage"
 
   # VPC
   enable_vpc                           = true
-  vpc_name                             = "vpc_endpoint"
+  vpc_name                             = "vpc"
   vpc_instance_tenancy                 = "dedicated"
   vpc_enable_dns_support               = true
   vpc_enable_dns_hostnames             = true
@@ -61,7 +61,7 @@ module "vpc" {
 }
 
 module "emr" {
-  source      = "../../modules/emr"
+  source      = "../"
   name        = "TEST"
   environment = "stage"
 
