@@ -14,7 +14,7 @@ Import the module and retrieve with ```terraform get``` or ```terraform get --up
 # MAINTAINER Vitaliy Natarov "vitaliy.natarov@yahoo.com"
 #
 terraform {
-  required_version = "~> 0.14"
+  required_version = "~> 1.0"
 }
 
 provider "aws" {
@@ -23,13 +23,13 @@ provider "aws" {
 }
 
 module "vpc" {
-  source      = "git@github.com:SebastianUA/terraform.git//aws/modules/vpc?ref=master"
-  name        = "vpc"
+  source      = "../../modules/vpc"
+  name        = "endpoint"
   environment = "stage"
 
   # VPC
   enable_vpc                           = true
-  vpc_name                             = "vpc"
+  vpc_name                             = "vpc_endpoint"
   vpc_instance_tenancy                 = "dedicated"
   vpc_enable_dns_support               = true
   vpc_enable_dns_hostnames             = true
@@ -57,11 +57,15 @@ module "vpc" {
   enable_eip = false
 
 
-  tags = map("Env", "stage", "Orchestration", "Terraform")
+  tags = tomap({
+    "Environment"   = "dev",
+    "Createdby"     = "Vitaliy Natarov",
+    "Orchestration" = "Terraform"
+  })
 }
 
 module "emr" {
-  source      = "../"
+  source      = "../../modules/emr"
   name        = "TEST"
   environment = "stage"
 
@@ -234,12 +238,13 @@ module "emr" {
     }
   ]
 
-  tags = map(
-    "Env", "stage",
-    "Orchestration", "Terraform",
-    "Createdby", "Vitaliy Natarov",
-  )
+  tags = tomap({
+    "Environment"   = "dev",
+    "Createdby"     = "Vitaliy Natarov",
+    "Orchestration" = "Terraform"
+  })
 }
+
 ```
 
 ## Module Input Variables
